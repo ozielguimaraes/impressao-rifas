@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rifas</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap" />
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <style>
+        * {
+            font-size: 12px;
+            ;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .font-roboto {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        @media print {
+            .nao-imprimir {
+                display: none;
+            }
+
+            body {
+                margin-top: 0cm;
+                margin-left: 1cm;
+                margin-right: 0.5cm;
+                margin-bottom: 0cm;
+            }
+
+            .no-page-break {
+                page-break-inside: avoid;
+                break-inside: avoid;
+                -webkit-region-break-inside: avoid;
+            }
+        }
+
+        .canhoto div div label {
+            font-size: small;
+        }
+
+        .canhoto div div input {
+            height: 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="nao-imprimir">Monte sua rifa aqui</h1>
+    <div class="container">
+        <form id="rifaForm" action="" class="nao-imprimir">
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label">Título</label>
+                        <input id="titulo" required class="form-control" name="titulo"
+                            placeholder="Como vamos chamar essa ação?" />
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="subTitulo" class="form-label">Sub Título</label>
+                        <input id="subTitulo" required class="form-control" name="subTitulo"
+                            placeholder="Qual o nome da sua organizaçao?" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="numeroInicial" class="form-label">Numeração inicial</label>
+                        <input id="numeroInicial" required type="number" min="1" class="form-control"
+                            name="numeroInicial" placeholder="1" />
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="numeroFinal" class="form-label">Numeração final</label>
+                        <input id="numeroFinal" required type="number" min="1" class="form-control" name="numeroFinal"
+                            placeholder="300" />
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="dataSorteio" class="form-label">Data do sorteio</label>
+                        <input id="dataSorteio" required class="form-control" name="dataSorteio"
+                            placeholder="Ex: Fevereiro de 2024" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição</label>
+                        <textarea id="descricao" required class="form-control invalid" name="descricao" rows="7"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <input id="imagem" type="file" name="imagem" />
+                </div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button id="visualizar" type="submit" class="btn btn-primary me-md-2" type="button">Visualizar</button>
+                <button id="imprimir" class="btn btn-secondary me-md-2" type="button"
+                    onclick="abrirImpressao();">Imprimir</button>
+            </div>
+        </form>
+        <h2 class="nao-imprimir">Modelo de como será sua rifa</h2>
+        <div id="template" class="row nao-imprimir mt-3 no-page-break"
+            style="border-top: 1px dashed black;border-bottom: 1px dashed black">
+            <div class="col-4" style="border: 0 1px 0 0 dashed black">
+                <div class="row canhoto" style="background-color: bisque;">
+                    <div class="col-12">
+                        <div class="">
+                            <label class="form-label">Nome</label>
+                            <input class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="">
+                            <label class="form-label">Telefone</label>
+                            <input class="form-control" />
+                        </div>
+                    </div>
+                    <!-- <div class="col-12">
+                        <div class="">
+                            <label class="form-label">Email</label>
+                            <input class="form-control" />
+                        </div>
+                    </div> -->
+                    <div class="col-12">
+                        <div class="">
+                            <label class="form-label">Endereço</label>
+                            <textarea class="form-control" style="margin-bottom: 5px;" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <div class="numero font-roboto"
+                        style="text-align: right;font-weight: bold;color:red;font-size: larger;">010 </div>
+                </div>
+            </div>
+            <div class="col-8">
+                <h2 class="titulo font-roboto text-center">Ação entre amigos - Dia das mães</h2>
+                <h3 class="subTitulo font-monospace text-center" style="font-weight: bold; font-size: 18px;">Adolesede
+                </h3>
+                <div class="rifa-descricao d-flex align-items-start justify-content-end">
+                    <div class="descricao">
+                        Comprando nossa rifa, você concorre a prêmios incríveis e apoiando nosso departamento de
+                        adolescentes!
+                        Os prêmios da cesta são os seguintes: <br />
+                        - 1 Escova secadora<br />
+                        - 1 Kit com perfume e hidratante<br />
+                        - 1 Tratamento de lash lifting para os cílios<br />
+                        - 1 Um design de sobrancelha personalizado<br />
+                        <br />
+                    </div>
+                    <img id="draggable-element" class="imagem float-right" src="sistema-rifa.jpg" alt="Imagem da rifa"
+                        height="160" width="160" draggable="true">
+                </div>
+                <div class="row d-flex float-left">
+                    <div class="dataSorteio text-center col-9" style="font-weight: bold;"><b>Sorteio: 14 de Maio de 2023</b>
+                    </div>
+                    <div id="numero" class="numero font-roboto col-3" style="text-align: right;font-weight: bold;color:red;font-size: larger;">010</div>
+                </div>
+            </div>
+        </div>
+        <hr class="nao-imprimir" style="border: 3px solid black;" />
+        <div id="items">
+        </div>
+        <script>
+            tinymce.init({
+                selector: "#descricao",
+                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+                tinycomments_author: 'Oziel Silva'
+            });
+            document.addEventListener('DOMContentLoaded', function () {
+                var visualizarBtn = document.getElementById('visualizar');
+                var template = document.getElementById('template');
+                var form = document.getElementById('rifaForm');
+
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    if (!form.checkValidity()) {
+                        alert('Por favor, preencha todos os campos corretamente.');
+                        return;
+                    }
+
+                    var numeroInicial = parseInt(document.getElementById('numeroInicial').value, 10) || 1;
+                    var numeroFinal = parseInt(document.getElementById('numeroFinal').value, 10) || 100;
+                    var descricao = document.getElementById('descricao').value;
+                    var titulo = document.getElementById('titulo').value;
+                    var subTitulo = document.getElementById('subTitulo').value;
+                    var imagem = document.getElementById('imagem').value;
+                    var dataDoSorteio = document.getElementById('dataSorteio').value || "";
+
+                    var pos = 1;
+                    for (var i = numeroInicial; i <= numeroFinal; i++) {
+                        console.log("item " + i);
+
+                        // var clone = template.firstElementChild.cloneNode(true);
+                        var clone = template.cloneNode(true);
+                        clone.removeAttribute('id');
+                        clone.classList.remove('nao-imprimir');
+                        clone.querySelector('.numero').textContent = "N.º " + i;
+                        clone.querySelector('#numero').textContent = "N.º " + i;
+                        console.log(clone.querySelector('.titulo'));
+                        clone.querySelector('.titulo').textContent = titulo;
+                        clone.querySelector('.subTitulo').textContent = subTitulo;
+                        clone.querySelector('.dataSorteio').textContent = dataDoSorteio;
+                        clone.querySelector('.descricao').innerHTML  = descricao;
+
+                        if (imagem) {
+                            clone.querySelector('.imagem').src = imagem || "";
+                        }
+                        else {
+                            clone.querySelector('.imagem').classList.add('hidden');
+                        }
+
+                        document.getElementById('items').appendChild(clone);
+                        //template.parentNode.insertBefore(clone, template.nextSibling); // works
+                        pos++;
+                    }
+                });
+            });
+            function abrirImpressao() {
+                window.print();
+            }
+        </script>
+        <!--         
+    <script>
+        var draggableElement = document.getElementById("draggable-element");
+        var dropContainer = document.getElementById("template");
+
+        // Adicionar evento 'dragstart' ao elemento arrastável
+        draggableElement.addEventListener("dragstart", function(event) {
+            event.dataTransfer.setData("text/plain", event.target.id);
+        });
+
+        // Adicionar evento 'dragover' ao contêiner onde o elemento pode ser solto
+        dropContainer.addEventListener("dragover", function(event) {
+            event.preventDefault();
+        });
+
+        // Adicionar evento 'drop' ao contêiner onde o elemento pode ser solto
+        dropContainer.addEventListener("drop", function(event) {
+            event.preventDefault();
+            var data = event.dataTransfer.getData("text/plain");
+            var draggedElement = document.getElementById(data);
+            var x = event.clientX - dropContainer.offsetLeft;
+            var y = event.clientY - dropContainer.offsetTop;
+            draggedElement.style.position = "absolute";
+            draggedElement.style.left = x + "px";
+            draggedElement.style.top = y + "px";
+            dropContainer.appendChild(draggedElement);
+        });
+    </script> -->
+    </div>
+</body>
+
+</html>
