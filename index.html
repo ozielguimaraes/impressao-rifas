@@ -12,7 +12,7 @@
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap" />
-    <script src="https://cdn.tiny.cloud/1/ad5qpe7baj1hq8pgc6n7xc3hwygse0zfum688fcevx783z73/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <!-- <script src="https://cdn.tiny.cloud/1/ad5qpe7baj1hq8pgc6n7xc3hwygse0zfum688fcevx783z73/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> -->
     <style>
         * {
             font-size: 12px;
@@ -114,13 +114,12 @@
             </div>
             <div class="row">
                 <div class="col-6">
-                    <input id="imagem" type="file" name="imagem" />
+                    <input id="imagem" type="file" name="imagem" accept="image/*" />
                 </div>
             </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <button id="visualizar" type="submit" class="btn btn-primary me-md-2" type="button">Visualizar</button>
-                <button id="imprimir" class="btn btn-secondary me-md-2" type="button"
-                    onclick="abrirImpressao();">Imprimir</button>
+                <button id="imprimir" class="btn btn-secondary me-md-2" type="button" onclick="abrirImpressao();">Imprimir</button>
             </div>
         </form>
         <h2 class="nao-imprimir">Modelo de como será sua rifa</h2>
@@ -171,7 +170,7 @@
                         - 1 Tratamento de lash lifting para os cílios<br>
                         - 1 Um design de sobrancelha personalizado<br>
                     </div>
-                    <img id="draggable-element" class="imagem float-right" src="sistema-rifa.jpg" alt="Imagem da rifa"
+                    <img id="imagemTemplate" class="imagem float-right" src="sistema-rifa.jpg" alt="Imagem da rifa"
                         height="160" width="160" draggable="true">
                 </div>
                 <div class="row d-flex float-left">
@@ -182,19 +181,17 @@
             </div>
         </div>
         <hr class="nao-imprimir" style="border: 3px solid black;" />
-        <div id="items">
-        </div>
+        <div id="items"></div>
         <script>
-            tinymce.init({
-                selector: "#descricao",
-                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-                tinycomments_author: 'Oziel Silva'
-            });
+            // tinymce.init({
+            //     selector: "#descricao"
+            // });
             document.addEventListener('DOMContentLoaded', function () {
                 var visualizarBtn = document.getElementById('visualizar');
                 var template = document.getElementById('template');
                 var form = document.getElementById('rifaForm');
-
+                var imagemInput = document.getElementById("imagem");
+                
                 form.addEventListener('submit', function (event) {
                     event.preventDefault();
 
@@ -203,12 +200,12 @@
                         return;
                     }
 
+                    document.getElementById('items'). innerHTML = "";
                     var numeroInicial = parseInt(document.getElementById('numeroInicial').value, 10) || 1;
                     var numeroFinal = parseInt(document.getElementById('numeroFinal').value, 10) || 100;
                     var descricao = document.getElementById('descricao').value;
                     var titulo = document.getElementById('titulo').value;
                     var subTitulo = document.getElementById('subTitulo').value;
-                    var imagem = document.getElementById('imagem').value;
                     var dataDoSorteio = document.getElementById('dataSorteio').value || "";
 
                     var pos = 1;
@@ -227,8 +224,9 @@
                         clone.querySelector('.dataSorteio').textContent = dataDoSorteio;
                         clone.querySelector('.descricao').innerHTML  = descricao;
 
+                        var imagem = document.getElementById("imagemTemplate").getAttribute("src");
                         if (imagem) {
-                            clone.querySelector('.imagem').src = imagem || "";
+                            clone.querySelector('.imagem').src = imagem;
                         }
                         else {
                             clone.querySelector('.imagem').classList.add('hidden');
@@ -239,39 +237,21 @@
                         pos++;
                     }
                 });
+                imagemInput.addEventListener("change", function (e) {
+                    var file = e.target.files[0];
+                    if (file) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            document.getElementById("imagemTemplate").src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
             });
             function abrirImpressao() {
                 window.print();
             }
         </script>
-        <!--         
-    <script>
-        var draggableElement = document.getElementById("draggable-element");
-        var dropContainer = document.getElementById("template");
-
-        // Adicionar evento 'dragstart' ao elemento arrastável
-        draggableElement.addEventListener("dragstart", function(event) {
-            event.dataTransfer.setData("text/plain", event.target.id);
-        });
-
-        // Adicionar evento 'dragover' ao contêiner onde o elemento pode ser solto
-        dropContainer.addEventListener("dragover", function(event) {
-            event.preventDefault();
-        });
-
-        // Adicionar evento 'drop' ao contêiner onde o elemento pode ser solto
-        dropContainer.addEventListener("drop", function(event) {
-            event.preventDefault();
-            var data = event.dataTransfer.getData("text/plain");
-            var draggedElement = document.getElementById(data);
-            var x = event.clientX - dropContainer.offsetLeft;
-            var y = event.clientY - dropContainer.offsetTop;
-            draggedElement.style.position = "absolute";
-            draggedElement.style.left = x + "px";
-            draggedElement.style.top = y + "px";
-            dropContainer.appendChild(draggedElement);
-        });
-    </script> -->
     </div>
 </body>
 
