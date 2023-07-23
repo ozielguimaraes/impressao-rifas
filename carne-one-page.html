@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carnês</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap" />
+    <!-- <script src="https://cdn.tiny.cloud/1/ad5qpe7baj1hq8pgc6n7xc3hwygse0zfum688fcevx783z73/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> -->
+    <style>
+        * {
+            font-size: 12px;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .font-roboto {
+            font-family: 'Roboto', sans-serif;
+        }
+        @page {
+            size: A4;
+            margin: 0;
+        }
+        @media print {
+            html, body {
+                width: 210mm;
+                height: 297mm;        
+            }
+            .nao-imprimir {
+                display: none;
+            }
+
+            body {
+                margin-top: 0cm;
+                margin-left: 1cm;
+                margin-right: 0.5cm;
+                margin-bottom: 0cm;
+                width: 100%;
+                height: 100%;
+            }
+
+            .no-page-break {
+                page-break-inside: avoid;
+                break-inside: avoid;
+                -webkit-region-break-inside: avoid;
+            }
+
+            .next-page {
+                margin: 0;
+                border: initial;
+                border-radius: initial;
+                width: initial;
+                min-height: initial;
+                box-shadow: initial;
+                background: initial;
+                page-break-after: always;
+            }
+            .container{
+                margin: 0;
+                padding: 0;
+            }
+        }
+        .canhoto, .carne-descricao{
+            border: 2px solid black;
+        }
+        .canhoto div div label {
+            font-size: small;
+        }
+
+        .canhoto div div input {
+            height: 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="nao-imprimir">Monte seu carnê aqui</h1>
+    <div class="container">
+        <form id="carneForm" action="" class="nao-imprimir">
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label">Título</label>
+                        <input id="titulo" required class="form-control" name="titulo"
+                            placeholder="Como vamos chamar essa ação?" />
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="subtitulo" class="form-label">Subtítulo</label>
+                        <input id="subtitulo" required class="form-control" name="subtitulo"
+                            placeholder="Qual o nome da sua organizaçao?" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    <div class="mb-3">
+                        <label for="valorParcela" class="form-label">Valor</label>
+                        <input id="valorParcela" required type="number" min="1" step="0.01" onkeyup="validateDecimal(this)" class="form-control"
+                            name="valorParcela" placeholder="R$ 50,00" />
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-3">
+                        <label for="meses" class="form-label">Meses de pagamento</label>
+                        <input id="mesesPagamento" required class="form-control" name="dataSorteio"
+                            placeholder="Agosto, Setembro, Outubro" />
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="mb-3">
+                        <label for="observacao" class="form-label">Observação</label>
+                        <input id="observacao" required class="form-control" name="observacao"
+                            placeholder="Ex: Quitação até dia 20/Outubro" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <h5 class="font-weight-bold mt-2">Qr-Code do PIX</h4>
+                        <input id="imagem" type="file" name="imagem" accept="image/*" />
+                </div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button id="visualizar" type="submit" class="btn btn-primary me-md-2" type="button">Visualizar</button>
+                <button id="imprimir" class="btn btn-secondary me-md-2" type="button"
+                    onclick="abrirImpressao();">Imprimir</button>
+            </div>
+        </form>
+        <h2 class="nao-imprimir">Modelo de como será seu carnê</h2>
+        <div id="template" class="row nao-imprimir mt-3 no-page-break"
+            style="border-top: 1px dashed black;border-bottom: 1px dashed black">
+            <div class="col-4" style="border: 0 1px 0 0 dashed black">
+                <h4 class="text-center" style="font-weight: bold;">CARNÊ DE PAGAMENTO</h4>
+                <h6 class="titulo text-center">Título do seu carnê</h6>
+                <h6 class="subtitulo text-center">Subtítulo do seu carnê</h6>
+                <div class="row canhoto">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class=""><b>Mês:</b> <label class="mesAtual">Agosto</label></div>
+                            </div>
+                            <div class="col-5">
+                                <div class=""><b>Parcela:</b> <label class="parcelaAtual">1</label>/<label class="totalParcelas">3</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class=""><b>Nome:</b> <span class="nome"></span></div>
+                    </div>
+                    <div class="col-12">
+                        <div class="">
+                            <b>Valor:</b> <label class="valorParcela">50,00</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="">
+                            <div class="">
+                                <b>Pago em:</b> ____/_______/2023
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="">
+                            <b>Recebido por:</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-8" style="padding-left: 15px;">
+                <h4 class="titulo text-center" style="font-weight: bold;">CARNÊ DE PAGAMENTO</h4>
+                <h6 class="titulo text-center">Título do seu carnê</h6>
+                <h6 class="subtitulo text-center">Subtítulo do seu carnê</h6>
+                <div class="row carne-descricao d-flex align-items-start justify-content-end">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class=""><b>Mês:</b> <label class="mesAtual">Agosto</label></div>
+                            </div>
+                            <div class="col-5">
+                                <div class=""><b>Parcela:</b> <label class="parcelaAtual">1</label>/<label class="totalParcelas">3</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class=""><b>Nome:</b> <span class="nome"></span></div>
+                    </div>
+                    <div class="col-12">
+                        <div class="">
+                            <b>Valor:</b> <label class="valorParcela">50,00</label>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="">
+                            <div class="">
+                                <b>Pago em:</b> ____/_______/2023
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="">
+                            <b>Recebido por:</b>
+                        </div>
+                    </div>
+                    <!-- <img id="imagemTemplate" class="imagem float-right" src="sistema-rifa.jpg" alt="Imagem da carne" height="160" width="160" draggable="true" /> -->
+                </div>
+                <!-- <div class="row d-flex float-left">
+                    <div class="observacao text-center col-9" style="font-weight: bold;"><b>Quitação até dia 20/Outubro</b>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <hr class="nao-imprimir" style="border: 3px solid black;" />
+        <div id="items"></div>
+        <script>
+            function validateDecimal(input) {
+                var valueString = input.value.replace(".", "");
+
+                let value = parseFloat(valueString);
+                if (!isNaN(value)) {
+                    input.value = (value / 100).toFixed(2);
+                }
+            }
+            document.addEventListener('DOMContentLoaded', function () {
+                var visualizarBtn = document.getElementById('visualizar');
+                var template = document.getElementById('template');
+                var form = document.getElementById('carneForm');
+                var imagemInput = document.getElementById("imagem");
+
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+
+                    if (!form.checkValidity()) {
+                        alert('Por favor, preencha todos os campos corretamente.');
+                        return;
+                    }
+
+                    document.getElementById('items').innerHTML = "";
+                    var valorParcela = document.getElementById('valorParcela').value;
+                    var mesesPagamento = document.getElementById('mesesPagamento').value;
+                    var titulo = document.getElementById('titulo').value;
+                    var subtitulo = document.getElementById('subtitulo').value;
+                    var observacao = document.getElementById('observacao').value || "";
+
+                    var pos = 1;
+                    let listaDeMeses = mesesPagamento.replace(/\s/g, "").split(",");
+                    let totalDeMeses = listaDeMeses.length;
+                    
+                    for (var i = 1; i <= totalDeMeses; i++) {
+                        var clone = template.cloneNode(true);
+                        clone.removeAttribute('id');
+                        clone.classList.remove('nao-imprimir');
+                        console.log(clone.querySelector('.titulo'));
+                        clone.querySelector('.titulo').textContent = titulo;
+                        clone.querySelector('.subtitulo').textContent = subtitulo;
+                        clone.querySelector('.observacao').textContent = observacao;
+                        clone.querySelector('.valorParcela').textContent = valorParcela;
+                        clone.querySelector('.parcelaAtual').textContent = i;
+                        clone.querySelector('.totalParcelas').textContent = totalDeMeses;
+                        clone.querySelector('.mesAtual').textContent = listaDeMeses[i-1];
+
+                        var imagem = document.getElementById("imagemTemplate").getAttribute("src");
+                        if (imagem) {
+                            clone.querySelector('.imagem').src = imagem;
+                        }
+                        else {
+                            clone.querySelector('.imagem').classList.add('hidden');
+                        }
+
+                        document.getElementById('items').appendChild(clone);
+                        //template.parentNode.insertBefore(clone, template.nextSibling); // works
+                        pos++;
+                    }
+                });
+                imagemInput.addEventListener("change", function (e) {
+                    var file = e.target.files[0];
+                    if (file) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            document.getElementById("imagemTemplate").src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            });
+            function abrirImpressao() {
+                window.print();
+            }
+        </script>
+    </div>
+</body>
+
+</html>
