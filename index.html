@@ -16,7 +16,6 @@
     <style>
         * {
             font-size: 12px;
-            ;
         }
 
         body {
@@ -26,6 +25,16 @@
         h1 {
             font-size: 20px;
             text-align: center;
+        }
+
+        .titulo {
+            font-size: 18px;
+        }
+
+        .subTitulo {
+            font-size: 14px;
+            font-weight: bold;
+            margin: 0;
         }
 
         .font-roboto {
@@ -42,6 +51,7 @@
                 margin-left: 1cm;
                 margin-right: 0.5cm;
                 margin-bottom: 0cm;
+                padding: 0;
             }
 
             .no-page-break {
@@ -52,11 +62,27 @@
         }
 
         .canhoto div div label {
-            font-size: small;
+            font-size: 12px;
         }
 
         .canhoto div div input {
-            height: 25px;
+            height: 18px;
+        }
+
+        .canhoto div div textarea {
+            height: 40px;
+        }
+
+        .rifa-descricao .descricao {
+            font-size: 10px;
+        }
+
+        .form-label {
+            margin: 0;
+        }
+
+        .dataSorteio {
+            font-size: 11px;
         }
     </style>
 </head>
@@ -108,7 +134,8 @@
                 <div class="col-12">
                     <div class="mb-3">
                         <label for="descricao" class="form-label">Descrição</label>
-                        <textarea id="descricao" required class="form-control invalid" name="descricao" rows="7"></textarea>
+                        <textarea id="descricao" required class="form-control invalid" name="descricao"
+                            rows="7"></textarea>
                     </div>
                 </div>
             </div>
@@ -119,11 +146,12 @@
             </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <button id="visualizar" type="submit" class="btn btn-primary me-md-2" type="button">Visualizar</button>
-                <button id="imprimir" class="btn btn-secondary me-md-2" type="button" onclick="abrirImpressao();">Imprimir</button>
+                <button id="imprimir" class="btn btn-secondary me-md-2" type="button"
+                    onclick="abrirImpressao();">Imprimir</button>
             </div>
         </form>
         <h2 class="nao-imprimir">Modelo de como será sua rifa</h2>
-        <div id="template" class="row nao-imprimir mt-3 no-page-break"
+        <div id="template" class="row nao-imprimir mt-1 no-page-break"
             style="border-top: 1px dashed black;border-bottom: 1px dashed black">
             <div class="col-4" style="border: 0 1px 0 0 dashed black">
                 <div class="row canhoto" style="background-color: bisque;">
@@ -139,59 +167,93 @@
                             <input class="form-control" />
                         </div>
                     </div>
-                    <!-- <div class="col-12">
-                        <div class="">
-                            <label class="form-label">Email</label>
-                            <input class="form-control" />
-                        </div>
-                    </div> -->
                     <div class="col-12">
                         <div class="">
                             <label class="form-label">Endereço</label>
                             <textarea class="form-control" style="margin-bottom: 5px;" rows="2"></textarea>
                         </div>
                     </div>
-                    <div class="numero font-roboto"
-                        style="text-align: right;font-weight: bold;color:red;font-size: larger;">010 </div>
+                    <div class="col-12 d-flex justify-content-between">
+                        <div class="font-roboto" style="text-align: right;font-weight: bold;font-size: larger;">R$ 10,00
+                        </div>
+                        <div class="numero font-roboto"
+                            style="text-align: right;font-weight: bold;color:red;font-size: larger;">010 </div>
+                    </div>
                 </div>
             </div>
             <div class="col-8">
-                <h2 class="titulo font-roboto text-center">Ação entre amigos - Dia das mães</h2>
-                <h3 class="subTitulo font-monospace text-center" style="font-weight: bold; font-size: 18px;">Adolesede
-                </h3>
-                <div class="rifa-descricao d-flex align-items-start justify-content-end">
-                    <div class="descricao">
-                        Comprando nossa rifa, você concorre a prêmios incríveis e apoiando nosso departamento de
-                        adolescentes!
-                        Os prêmios da cesta são os seguintes: <br>
-                        - 1 Escova secadora<br>
-                        - 1 Case Sany &amp; Z<br>
-                        - 1 Kit com perfume e hidratante<br>
-                        - 1 Tratamento de lash lifting para os cílios<br>
-                        - 1 Um design de sobrancelha personalizado<br>
+                <div class="d-flex align-items-center">
+                    <div class="">
+                        <h2 class="titulo font-roboto text-center">Ação entre amigos - Dia das mães</h2>
+                        <h3 class="subTitulo font-monospace text-center">Adolesede 2023</h3>
+                        <div class="rifa-descricao d-flex align-items-start justify-content-end">
+                            <div class="descricao">
+                                Comprando nossa rifa, você concorre a prêmios incríveis e apoiando nosso departamento de
+                                adolescentes!
+                                Os prêmios da cesta são os seguintes: <br>
+                                - 1 Escova secadora<br>
+                                - 1 Case Sany &amp; Z (@sanyzarts)<br>
+                                - 1 Kit com perfume e hidratante<br>
+                                - 1 Tratamento de lash lifting para os cílios (@studiotaticaixeta)<br>
+                                - 1 Um design de sobrancelha personalizado (@studiotaticaixeta)<br>
+                            </div>
+                        </div>
                     </div>
-                    <img id="imagemTemplate" class="imagem float-right" src="sistema-rifa.jpg" alt="Imagem da rifa"
-                        height="160" width="160" draggable="true">
+                    <img id="imagemTemplate" class="imagem float-right" src="sistema-rifa.jpeg" alt="Imagem da rifa"
+                        height="130" width="130" draggable="true">
                 </div>
                 <div class="row d-flex float-left">
-                    <div class="dataSorteio text-center col-9" style="font-weight: bold;"><b>Sorteio: 14 de Maio de 2023</b>
+                    <div class="dataSorteio text-center col-6" style="font-weight: bold;">
+                        <b>Sorteio: 14 de Maio de 2023</b>
                     </div>
-                    <div id="numero" class="numero font-roboto col-3" style="text-align: right;font-weight: bold;color:red;font-size: larger;">010</div>
+                    <div class="col-3" style="font-weight: bold;font-size: 16px;">R$ 10,00</div>
+                    <div id="numero" class="numero font-roboto col-3"
+                        style="text-align: right;font-weight: bold;color:red;font-size: larger;">010</div>
+                </div>
+            </div>
+        </div>
+        <div id="templateBack" class="row nao-imprimir mt-1 no-page-break"
+            style="border-top: 1px dashed black;border-bottom: 1px dashed black">
+            <div class="col-4" style="border: 0 1px 0 0 dashed black">
+                <div class="row canhoto">
+                    <div class="col-12">
+                        <label class=" mt-1">IGREJA EVANGÉLICA ASSEMBLEIA DE DEUS</label>
+                        <label>17.790.270/0001-46</label>
+                        <div class="row col mb-2">
+                            <img id="imagemTemplate" class="imagem row" src="pix-convictos.jpeg" alt="Imagem do PIX"                             style="max-width: 110px;max-height: 110px;" />
+                            <b>PIX:</b> <span id="chavePix">admp.financeiro@aduberlandia.com.br</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-7">
+                <div class="d-flex align-items-center">
+                    <div class="mt-2">
+                        <h2 class="titulo font-roboto text-center">Obrigado pelo seu apoio ao nosso departamento</h3>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center mt-4">
+                    <div class="dataSorteio text-center col-6 mt-4" style="font-weight: bold;">
+                        <b>Obrigado por fazer a diferença!</b>
+                    </div>
+                </div>
+                <div class="mt-5 d-flex justify-content-center">
+                    Enviar comprovante do PIX para &nbsp;<b> (34) 99691-9292</b>
                 </div>
             </div>
         </div>
         <hr class="nao-imprimir" style="border: 3px solid black;" />
         <div id="items"></div>
         <script>
-            // tinymce.init({
-            //     selector: "#descricao"
-            // });
             document.addEventListener('DOMContentLoaded', function () {
                 var visualizarBtn = document.getElementById('visualizar');
                 var template = document.getElementById('template');
+                var templateBack = document.getElementById('templateBack');
                 var form = document.getElementById('rifaForm');
                 var imagemInput = document.getElementById("imagem");
-                
+                var itemsContainer = document.getElementById('items');
+
                 form.addEventListener('submit', function (event) {
                     event.preventDefault();
 
@@ -200,7 +262,7 @@
                         return;
                     }
 
-                    document.getElementById('items'). innerHTML = "";
+                    itemsContainer.innerHTML = "";
                     var numeroInicial = parseInt(document.getElementById('numeroInicial').value, 10) || 1;
                     var numeroFinal = parseInt(document.getElementById('numeroFinal').value, 10) || 100;
                     var descricao = document.getElementById('descricao').value;
@@ -208,6 +270,7 @@
                     var subTitulo = document.getElementById('subTitulo').value;
                     var dataDoSorteio = document.getElementById('dataSorteio').value || "";
 
+                    var backs = [];
                     var pos = 1;
                     for (var i = numeroInicial; i <= numeroFinal; i++) {
                         console.log("item " + i);
@@ -222,7 +285,7 @@
                         clone.querySelector('.titulo').textContent = titulo;
                         clone.querySelector('.subTitulo').textContent = subTitulo;
                         clone.querySelector('.dataSorteio').textContent = dataDoSorteio;
-                        clone.querySelector('.descricao').innerHTML  = descricao;
+                        clone.querySelector('.descricao').innerHTML = descricao;
 
                         var imagem = document.getElementById("imagemTemplate").getAttribute("src");
                         if (imagem) {
@@ -231,11 +294,22 @@
                         else {
                             clone.querySelector('.imagem').classList.add('hidden');
                         }
-
                         document.getElementById('items').appendChild(clone);
-                        //template.parentNode.insertBefore(clone, template.nextSibling); // works
+
+                        if (pos <= 5) {
+                            var cloneBack = templateBack.cloneNode(true);
+                            cloneBack.removeAttribute('id');
+                            cloneBack.classList.remove('nao-imprimir');
+
+                            backs.push(cloneBack);
+                        }
+
                         pos++;
                     }
+
+                    backs.forEach(function (back) {
+                        itemsContainer.appendChild(back);
+                    });
                 });
                 imagemInput.addEventListener("change", function (e) {
                     var file = e.target.files[0];
